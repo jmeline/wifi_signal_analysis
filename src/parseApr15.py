@@ -69,6 +69,9 @@ class FileExtractor():
             for line in fin:
                 arrayList.append(' '.join(line.split()).split())
         return arrayList        
+    def generateDataFrameFromFile(self, filename):
+        path = myPath + filename
+        return pd.read_csv(path, skiprows=2, delimiter='\t', header=0)
 
 class MathFunctions():
     def __init__(self):
@@ -95,8 +98,9 @@ class MathFunctions():
         self.waterFall = []
         self.sortedSignals = []
         self.results = 0
-    def extractLines(self, lines):
-        df = pd.DataFrame(lines)
+    def extractLines(self, df):
+        print (self.threshold, self.threshold)
+        self.signalCount = len(df[df.ix[:,2] >= self.threshold])
         print (df)
         for line in lines:
             if len(line) > 1:
@@ -124,10 +128,10 @@ class MathFunctions():
             if count >= len(self.sortedSignals):
                 break
             return count
-    def percent_above_threshold(self, lines ="", value=""):
-        if value and lines:
+    def percent_above_threshold(self, dataframe ="", value=""):
+        if value and dataframe.any:
             self.setVariables(value)
-            self.extractLines(lines)
+            self.extractLines(dataframe)
 
             if self.cut != 'theta=90':
                 self.plot_data.extend(self.plot_data2)
@@ -164,16 +168,20 @@ class MathFunctions():
 def main():
     f = FileExtractor(myPath)
     for i in f.getDirectoryFiles():
+        # populates filehash
         f.extractFiles(i)
-        # f.printDirectory()
+    f.printDirectory()
 
     mf = MathFunctions()
     for key, valueArr in sorted(f.returnFileHash().items()): 
-       for index in valueArr:
+        print ("ValueArr: ", valueArr) 
+        for filename in valueArr:
            if not key is 'efficien':
-               arrList = f.getListOfContents(index)
+               # arrList = f.getListOfContents(filename)
+               dataframe = f.generateDataFrameFromFile(filename)
+               print ("Key: ", key)
                # print ("arrList: ", arrList, " key: ", key)
-               mf.percent_above_threshold(arrList, key)
+               mf.percent_above_threshold(dataframe, key)
 
     #mf.printVariables()
 
