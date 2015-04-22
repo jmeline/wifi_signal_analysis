@@ -99,28 +99,35 @@ class MathFunctions():
         self.sortedSignals = []
         self.results = 0
     def extractLines(self, df):
-        print (self.threshold, self.threshold)
-        self.signalCount = len(df[df.ix[:,2] >= self.threshold])
+        copy_df = df
+        
         print (df)
-        for line in lines:
-            if len(line) > 1:
-                if line[0] == self.extract_frequency:
-                    #print ("piece:", line)
-                    #print("line[0]:", line[0])
-                    #print("line[2]:", line[2],)
-                    #cmpV = float(line[2])
-                    #print(cmpV, ">=", self.threshold, ":", cmpV >= self.threshold  )
+        # checks if line[0] == self.extract_frequency
+        
+        accepted_df = df[df.ix[:,0] == int(self.extract_frequency)] 
+        self.count = len(accepted_df)
+        # checks if line[2] >= self.threshold and finds length
+        self.signalCount = len(accepted_df[accepted_df.ix[:,2] >= self.threshold])
+        self.arr_signal = accepted_df.ix[:,2] 
+        #for line in lines:
+        #    if len(line) > 1:
+        #        if line[0] == self.extract_frequency:
+        #            #print ("piece:", line)
+        #            #print("line[0]:", line[0])
+        #            #print("line[2]:", line[2],)
+        #            #cmpV = float(line[2])
+        #            #print(cmpV, ">=", self.threshold, ":", cmpV >= self.threshold  )
 
-                    self.count += 1
-                    if float(line[2]) >= self.threshold:
-                        self.signalCount += 1
-                    self.arr_signal.append(line[2])
-                    if self.cut == 'theta=90':
-                        self.plot_data.append("%.2f" % ((float(line[2]) + 15.0) * 5.0))
-                    elif self.count <= 60: 
-                        self.plot_data.append("%.2f" % (((float(line[2]) + 15.0) * 5.0)))
-                    else:
-                        self.plot_data2.append("%.2f" % (((float(line[2]) + 15.0) * 5.0)))
+        #            self.count += 1
+        #            if float(line[2]) >= self.threshold:
+        #                self.signalCount += 1
+        #            self.arr_signal.append(line[2])
+        #            if self.cut == 'theta=90':
+        #                self.plot_data.append("%.2f" % ((float(line[2]) + 15.0) * 5.0))
+        #            elif self.count <= 60: 
+        #                self.plot_data.append("%.2f" % (((float(line[2]) + 15.0) * 5.0)))
+        #            else:
+        #                self.plot_data2.append("%.2f" % (((float(line[2]) + 15.0) * 5.0)))
     def countSignals(self, index):
         count = 0
         while ( float(self.sortedSignals[count]) >= index):
