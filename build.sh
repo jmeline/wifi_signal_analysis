@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ ! -d ~/miniconda3/wifi ] then
-    conda create -n wifi python=3 pandas;
+if [ ! -d ~/miniconda3/wifi ]; then
+    conda create -n wifi python=3 pandas pytest;
 fi
 
-source wifi activate
+source activate wifi
 
