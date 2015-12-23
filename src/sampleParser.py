@@ -1,15 +1,17 @@
+import os
+import re
 
 class SampleParser():
     """ Gathers files that match user specific expression types """
 
     def __init__(self, folderName):
         self.folderName = folderName
-        self.fileHash = defaultdict(list)
+        self._sampleDictionary = {}
 
     def getDirectoryFiles(self):
         if self.folderName:
-            onlyfiles = [ f for f in listdir(self.folderName) \
-                    if isfile(join(self.folderName,f)) ]
+            onlyfiles = [ f for f in os.listdir(self.folderName) \
+                    if os.path.isfile(os.path.join(self.folderName,f)) ]
         else:
             print ("Path Not Found")
         return onlyfiles
@@ -19,11 +21,11 @@ class SampleParser():
         if self.folderName:
             for i in listdir(self.folderName):
                 print (i)
-            if self.fileHash:
-                for k,v in sorted(self.fileHash.items()):
+            if self._sampleDictionary:
+                for k,v in sorted(self._sampleDictionary.items()):
                     print ("%s: %s" % (k,v))
 
-    def extractFiles(self, fileName):
+    def storeFileNames(self, fileName):
         # Regular Expression Patterns
         eff_pat = r'efficien'
         phi0_pat = r'phi=0'
@@ -34,14 +36,14 @@ class SampleParser():
         for p in pattern:
             match = re.search(p, fileName)
             if match:
-               self.fileHash[p].append(fileName)
+               self._sampleDictionary[p] = fileName
 
-    def returnFileHash(self):
-        return self.fileHash
+    def getSampleDictionary(self):
+        return self._sampleDictionary
 
     def getListOfContents(self, fileName):
         arrayList = []
-        path = folderName + fileName
+        path = os.path.join(self.folderName, fileName)
         print (path)
         with open(path, 'r') as fin:
             for line in fin:
