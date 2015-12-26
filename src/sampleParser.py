@@ -25,7 +25,7 @@ class SampleParser():
                 for k,v in sorted(self._sampleDictionary.items()):
                     print ("%s: %s" % (k,v))
 
-    def storeFileNames(self, fileName):
+    def storeFileNamesByPatternInDictionary(self, fileName):
         # Regular Expression Patterns
         eff_pat = r'efficien'
         phi0_pat = r'phi=0'

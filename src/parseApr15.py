@@ -7,8 +7,9 @@ import pandas as pd
 import re
 import pprint
 
+from sampleParser import SampleParser as FileExtractor
 ## Modify your path ##
-myPath = './Export/'
+path = './Export/'
 ## ## ## ## ## ## ## #
 
 # To emulate perl's native ability to dynamically create
@@ -130,11 +131,12 @@ class MathFunctions():
                 print ("Error! No value for pname and/or cut")
 
 def main():
-    f = FileExtractor(myPath)
-    for i in f.getDirectoryFiles():
-        # populates filehash
-        f.extractFiles(i)
-    f.printDirectory()
+    f = FileExtractor(path)
+    currentFilesInDirectory = f.getDirectoryFiles()
+    for _file in currentFilesInDirectory:
+        f.storeFileNamesByPatternInDictionary(_file)
+    # Debugging
+    # f.printDirectory()
 
     mf = MathFunctions()
     for key, valueArr in sorted(f.returnFileHash().items()):

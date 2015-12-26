@@ -13,11 +13,11 @@ class TestSampleParser:
         files = self.parser.getDirectoryFiles()
         assert len(files) > 0
 
-    def test_storeFileNames(self):
+    def test_storeFileNamesInDictionary(self):
         files = self.parser.getDirectoryFiles()
         assert len(files) > 0
         for f in files:
-            self.parser.storeFileNames(f)
+            self.parser.storeFileNamesByPatternInDictionary(f)
         sampleDictionary = self.parser.getSampleDictionary()
         assert len(sampleDictionary) == 4
 
