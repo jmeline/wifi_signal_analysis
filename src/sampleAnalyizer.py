@@ -37,33 +37,13 @@ class SampleAnalyizer():
     def extractLines(self, df):
         copy_df = df
 
-        # print (df)
         # checks if line[0] == self.extract_frequency
-
         accepted_df = df[df.ix[:,0] == int(self.extract_frequency)]
         self.count = len(accepted_df)
         # checks if line[2] >= self.threshold and finds length
         self.signalCount = len(accepted_df[accepted_df.ix[:,2] >= self.threshold])
         self.arr_signal = accepted_df.ix[:,2]
-        #for line in lines:
-        #    if len(line) > 1:
-        #        if line[0] == self.extract_frequency:
-        #            #print ("piece:", line)
-        #            #print("line[0]:", line[0])
-        #            #print("line[2]:", line[2],)
-        #            #cmpV = float(line[2])
-        #            #print(cmpV, ">=", self.threshold, ":", cmpV >= self.threshold  )
 
-        #            self.count += 1
-        #            if float(line[2]) >= self.threshold:
-        #                self.signalCount += 1
-        #            self.arr_signal.append(line[2])
-        #            if self.cut == 'theta=90':
-        #                self.plot_data.append("%.2f" % ((float(line[2]) + 15.0) * 5.0))
-        #            elif self.count <= 60:
-        #                self.plot_data.append("%.2f" % (((float(line[2]) + 15.0) * 5.0)))
-        #            else:
-        #                self.plot_data2.append("%.2f" % (((float(line[2]) + 15.0) * 5.0)))
     def countSignals(self, index):
         count = 0
         while ( float(self.sortedSignals[count]) >= index):
@@ -72,41 +52,38 @@ class SampleAnalyizer():
                 break
         return count
     def percent_above_threshold(self, dataframe="", value=""):
-        if value and dataframe.any:
-            self.setVariables(value)
-            self.extractLines(dataframe)
 
-            if self.cut != 'theta=90':
-                self.plot_data.extend(self.plot_data2)
+        if self.cut != 'theta=90':
+            self.plot_data.extend(self.plot_data2)
 
-                self.sortedSignals = sorted(self.arr_signal)
-                #print("self.count:", self.count)
-                #print("self.signalCount:", self.signalCount)
-                #print("self.totalSignal:", self.totalSignal)
-                #print("self.signalCount/self.totalSignal:", float(self.signalCount)/self.totalSignal)
+            self.sortedSignals = sorted(self.arr_signal)
+            #print("self.count:", self.count)
+            #print("self.signalCount:", self.signalCount)
+            #print("self.totalSignal:", self.totalSignal)
+            #print("self.signalCount/self.totalSignal:", float(self.signalCount)/self.totalSignal)
 
-                self.results = 100.0 * int(10000 * self.signalCount / self.totalSignal) / 10000
-                print ("-> ", self.results, "% of signals above ", self.threshold, " dbi ")
-                #print ("self.plot_data:", sorted(self.plot_data), "len:", len(self.plot_data))
-                #print ("self.plot_data2:", sorted(self.plot_data2), "len:", len(self.plot_data2))
+            self.results = 100.0 * int(10000 * self.signalCount / self.totalSignal) / 10000
+            print ("-> ", self.results, "% of signals above ", self.threshold, " dbi ")
+            #print ("self.plot_data:", sorted(self.plot_data), "len:", len(self.plot_data))
+            #print ("self.plot_data2:", sorted(self.plot_data2), "len:", len(self.plot_data2))
 
-                self.tests[self.pname][self.cut]["percentAbove"] = self.results/100
-                self.tests[self.pname][self.cut]["plot_data"] = self.plot_data
+            self.tests[self.pname][self.cut]["percentAbove"] = self.results/100
+            self.tests[self.pname][self.cut]["plot_data"] = self.plot_data
 
-                for index in range(-30,11):
-                    count = self.countSignals(index)
-                    self.waterFall.append("%.2f" % (count/121.0 * 83.333))
+            for index in range(-30,11):
+                count = self.countSignals(index)
+                self.waterFall.append("%.2f" % (count/121.0 * 83.333))
 
-                self.tests[self.pname][self.cut]["waterFall"] = self.waterFall
+            self.tests[self.pname][self.cut]["waterFall"] = self.waterFall
 
-                if self.results <= 30:
-                    print ("- FAIL -")
-                else:
-                    print (" \n")
-                self.signalCount = 0
-
+            if self.results <= 30:
+                print ("- FAIL -")
             else:
-                print ("Error! No value for pname and/or cut")
+                print (" \n")
+            self.signalCount = 0
+
+        else:
+            print ("Error! No value for pname and/or cut")
 
     def generateDataFrameFromFile(self, filename):
         return pd.read_csv(filename, skiprows=2, delimiter='\t', header=0)

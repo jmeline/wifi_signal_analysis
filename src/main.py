@@ -28,6 +28,8 @@ def main():
                dataframe = analyzer.generateDataFrameFromFile(path + filename)
                print ("Key: ", key)
                # print ("arrList: ", arrList, " key: ", key)
+               analyzer.setVariables(key)
+               analyzer.extractLines(dataframe)
                analyzer.percent_above_threshold(dataframe, key)
 
     #mf.printVariables()
