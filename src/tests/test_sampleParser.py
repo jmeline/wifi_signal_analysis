@@ -10,23 +10,28 @@ class TestSampleParser:
         self.parser = sampleParser.SampleParser(self.folderName)
 
     def test_getDirectoryFiles(self):
-        files = self.parser.getDirectoryFiles()
+        files = self._obtainDirectory()
         assert len(files) > 0
 
-    def test_storeFileNamesInDictionary(self):
-        files = self.parser.getDirectoryFiles()
+    def test_storeFileNamesByPatternInDictionary(self):
+        files = self._obtainDirectory()
         assert len(files) > 0
-        for f in files:
-            self.parser.storeFileNamesByPatternInDictionary(f)
+        for _file in files:
+            self.parser.storeFileNamesByPatternInDictionary(_file)
         sampleDictionary = self.parser.getSampleDictionary()
         assert len(sampleDictionary) == 4
+        print ("SampleParser: ", sampleDictionary)
+        # each item in the dictionary should have two samples for each sample type
+        for sample in sampleDictionary.items():
+            assert len(sample) == 2
 
-    def test_getListOfContents(self):
-        files = self.parser.getDirectoryFiles()
+    def test_readFileIntoArray(self):
+        files = self._obtainDirectory()
         assert len(files) > 0
-        f = files[0]
-        assert len( self.parser.getListOfContents(f) ) > 0
+        assert len(self.parser.readFileIntoArray(files[0])) > 0
 
+    def _obtainDirectory(self):
+        return self.parser.getDirectoryFiles()
 
 
 

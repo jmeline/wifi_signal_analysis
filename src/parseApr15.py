@@ -7,7 +7,8 @@ import pandas as pd
 import re
 import pprint
 
-from sampleParser import SampleParser as FileExtractor
+from sampleParser import SampleParser as SampleExtractor
+
 ## Modify your path ##
 path = './Export/'
 ## ## ## ## ## ## ## #
@@ -131,20 +132,23 @@ class MathFunctions():
                 print ("Error! No value for pname and/or cut")
 
 def main():
-    f = FileExtractor(path)
-    currentFilesInDirectory = f.getDirectoryFiles()
+    ## Collect all of the samples and organize them together into a dictionary.
+    extractor = SampleExtractor(path)
+    currentFilesInDirectory = extractor.getDirectoryFiles()
     for _file in currentFilesInDirectory:
-        f.storeFileNamesByPatternInDictionary(_file)
+        extractor.storeFileNamesByPatternInDictionary(_file)
+    sampleDictionary = extractor.getSampleDictionary()
     # Debugging
     # f.printDirectory()
 
+    ## Begin analyzing data
     mf = MathFunctions()
-    for key, valueArr in sorted(f.returnFileHash().items()):
+    for key, valueArr in sorted(sampleDictionary.items()):
         print ("ValueArr: ", valueArr)
         for filename in valueArr:
            if not key is 'efficien':
                # arrList = f.getListOfContents(filename)
-               dataframe = f.generateDataFrameFromFile(filename)
+               dataframe = extractor.generateDataFrameFromFile(filename)
                print ("Key: ", key)
                # print ("arrList: ", arrList, " key: ", key)
                mf.percent_above_threshold(dataframe, key)
