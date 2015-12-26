@@ -11,9 +11,9 @@ import pprint
 myPath = './Export/'
 ## ## ## ## ## ## ## #
 
-# To emulate perl's native ability to dynamically create 
+# To emulate perl's native ability to dynamically create
 # data structures: Perl Autovivification allows a programmer
-# to refer to a structured variable, and arbitrary sub-elements 
+# to refer to a structured variable, and arbitrary sub-elements
 # of that structured variable, without expressly declaring the
 # existence of variable and its complete structure beforehand.
 
@@ -28,62 +28,18 @@ class Vividict(dict):
     def __missing__(self, key):
         value = self[key] = type(self)()
         return value
-
-class FileExtractor():
-    def __init__(self, myPath):
-        self.myPath = myPath
-        self.fileHash = defaultdict(list)
-    def getDirectoryFiles(self):
-        if self.myPath:
-            onlyfiles = [ f for f in listdir(self.myPath) \
-                    if isfile(join(self.myPath,f)) ]
-        else:
-            print ("Path Not Found")
-        return onlyfiles
-    def printDirectory(self):
-        if self.myPath:
-            for i in listdir(self.myPath):
-                print (i)
-            if self.fileHash:
-                for k,v in sorted(self.fileHash.items()):
-                    print ("%s: %s" % (k,v)) 
-    def extractFiles(self, fileName):
-        # Regular Expression Patterns
-        eff_pat = r'efficien'
-        phi0_pat = r'phi=0'
-        phi90_pat = r'phi=90'
-        theta90_pat = r'theta=90'
-
-        pattern = [theta90_pat, phi0_pat, phi90_pat, eff_pat]
-        for p in pattern:
-            match = re.search(p, fileName)
-            if match:
-               self.fileHash[p].append(fileName)
-    def returnFileHash(self):
-        return self.fileHash
-    def getListOfContents(self, fileName):
-        arrayList = []
-        path = myPath + fileName
-        print (path)
-        with open(path, 'r') as fin:
-            for line in fin:
-                arrayList.append(' '.join(line.split()).split())
-        return arrayList        
-    def generateDataFrameFromFile(self, filename):
-        path = myPath + filename
-        return pd.read_csv(path, skiprows=2, delimiter='\t', header=0)
-
 class MathFunctions():
     def __init__(self):
         self.tests = Vividict()
 
     def printVariables(self):
         print ("cut", self.cut)
-        print ("plot_data:", self.plot_data) 
+        print ("plot_data:", self.plot_data)
         print ("plot_data2:", self.plot_data)
         print ("arr_signal:", self.arr_signal)
         pp = pprint.PrettyPrinter(indent=4)
         pp.pprint(self.tests)
+
     def setVariables(self, value=""):
         self.pname = value
         self.cut = value
@@ -98,17 +54,18 @@ class MathFunctions():
         self.waterFall = []
         self.sortedSignals = []
         self.results = 0
+
     def extractLines(self, df):
         copy_df = df
-        
+
         print (df)
         # checks if line[0] == self.extract_frequency
-        
-        accepted_df = df[df.ix[:,0] == int(self.extract_frequency)] 
+
+        accepted_df = df[df.ix[:,0] == int(self.extract_frequency)]
         self.count = len(accepted_df)
         # checks if line[2] >= self.threshold and finds length
         self.signalCount = len(accepted_df[accepted_df.ix[:,2] >= self.threshold])
-        self.arr_signal = accepted_df.ix[:,2] 
+        self.arr_signal = accepted_df.ix[:,2]
         #for line in lines:
         #    if len(line) > 1:
         #        if line[0] == self.extract_frequency:
@@ -124,7 +81,7 @@ class MathFunctions():
         #            self.arr_signal.append(line[2])
         #            if self.cut == 'theta=90':
         #                self.plot_data.append("%.2f" % ((float(line[2]) + 15.0) * 5.0))
-        #            elif self.count <= 60: 
+        #            elif self.count <= 60:
         #                self.plot_data.append("%.2f" % (((float(line[2]) + 15.0) * 5.0)))
         #            else:
         #                self.plot_data2.append("%.2f" % (((float(line[2]) + 15.0) * 5.0)))
@@ -159,7 +116,7 @@ class MathFunctions():
 
                 for index in range(-30,11):
                     count = self.countSignals(index)
-                    self.waterFall.append("%.2f" % (count/121.0 * 83.333)) 
+                    self.waterFall.append("%.2f" % (count/121.0 * 83.333))
 
                 self.tests[self.pname][self.cut]["waterFall"] = self.waterFall
 
@@ -180,8 +137,8 @@ def main():
     f.printDirectory()
 
     mf = MathFunctions()
-    for key, valueArr in sorted(f.returnFileHash().items()): 
-        print ("ValueArr: ", valueArr) 
+    for key, valueArr in sorted(f.returnFileHash().items()):
+        print ("ValueArr: ", valueArr)
         for filename in valueArr:
            if not key is 'efficien':
                # arrList = f.getListOfContents(filename)
