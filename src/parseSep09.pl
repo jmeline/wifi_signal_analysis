@@ -18,7 +18,7 @@ sub percent_above_threshold {
     # pname is the file, cut is the type
     my @arr_signal;
 
-    print("\$pname: $pname, \$cut: $cut");
+    print("\$pname: $pname, \$cut: $cut\n");
 
     $extract_frequency = "2440000000";
     $signalcount = 0;
@@ -33,8 +33,8 @@ sub percent_above_threshold {
     foreach(@lines2) {
         @parts = split;
         # print ("[63] Parts: ", length(@parts), "\n\n");
-        print ("Parts: $parts[0], $parts[1], $parts[2] \n");
         if ($parts[0] == $extract_frequency) {
+            print ("Parts: [0]: $parts[0], [1]: $parts[1], [2]: $parts[2] \n");
             $count++;
 
             if ($parts[2] >= $threshold) {
