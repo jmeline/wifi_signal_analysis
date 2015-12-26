@@ -18,13 +18,17 @@ class SampleParser():
         return filesInDirectory
 
     def printDirectory(self):
+        print ("start DEbugging")
         """ Debugging/helper function """
-        if self.folderName:
-            for i in listdir(self.folderName):
-                print (i)
-            if self._sampleDictionary:
-                for k,v in sorted(self._sampleDictionary.items()):
-                    print ("%s: %s" % (k,v))
+        _directoryFiles = self.getDirectoryFiles()
+        print ("DirectoryFiles: ", len(_directoryFiles))
+        for _file in _directoryFiles:
+            print (_file)
+
+        print ("sampleDictionary: ", len(self._sampleDictionary))
+        for k,v in self._sampleDictionary.items():
+            print ("%s: %s" % (k,v))
+        print ("End DEbugging")
 
     def storeFileNamesByPatternInDictionary(self, fileName):
         # Regular Expression Patterns
@@ -53,6 +57,3 @@ class SampleParser():
                 contents.append(' '.join(line.split()).split())
         return contents
 
-    def generateDataFrameFromFile(self, filename):
-        path = folderName + filename
-        return pd.read_csv(path, skiprows=2, delimiter='\t', header=0)

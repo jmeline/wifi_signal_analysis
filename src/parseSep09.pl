@@ -35,6 +35,7 @@ sub percent_above_threshold {
         # print ("[63] Parts: ", length(@parts), "\n\n");
         if ($parts[0] == $extract_frequency) {
             print ("Parts: [0]: $parts[0], [1]: $parts[1], [2]: $parts[2] \n");
+            # keeps track of the valid entries
             $count++;
 
             if ($parts[2] >= $threshold) {

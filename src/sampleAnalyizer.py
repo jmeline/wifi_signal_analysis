@@ -1,24 +1,13 @@
+# sampleAnalyzer.py
+
 import pandas as pd
 import pprint
 
-# To emulate perl's native ability to dynamically create
-# data structures: Perl Autovivification allows a programmer
-# to refer to a structured variable, and arbitrary sub-elements
-# of that structured variable, without expressly declaring the
-# existence of variable and its complete structure beforehand.
-
-# More info at: https://en.wikipedia.org/wiki/Autovivification
-# Tree = lambda:defaultdict(Tree)
-# t = Tree()
-
-# http://stackoverflow.com/questions/635483/
-# what-is-the-best-way-to-implement-nested-
-# dictionaries-in-python/19829714#19829714
 class Vividict(dict):
     def __missing__(self, key):
         value = self[key] = type(self)()
         return value
-class MathFunctions():
+class SampleAnalyizer():
     def __init__(self):
         self.tests = Vividict()
 
@@ -48,7 +37,7 @@ class MathFunctions():
     def extractLines(self, df):
         copy_df = df
 
-        print (df)
+        # print (df)
         # checks if line[0] == self.extract_frequency
 
         accepted_df = df[df.ix[:,0] == int(self.extract_frequency)]
@@ -81,8 +70,8 @@ class MathFunctions():
             count += 1
             if count >= len(self.sortedSignals):
                 break
-            return count
-    def percent_above_threshold(self, dataframe ="", value=""):
+        return count
+    def percent_above_threshold(self, dataframe="", value=""):
         if value and dataframe.any:
             self.setVariables(value)
             self.extractLines(dataframe)
@@ -119,3 +108,5 @@ class MathFunctions():
             else:
                 print ("Error! No value for pname and/or cut")
 
+    def generateDataFrameFromFile(self, filename):
+        return pd.read_csv(filename, skiprows=2, delimiter='\t', header=0)
