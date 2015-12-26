@@ -33,7 +33,7 @@ sub percent_above_threshold {
     foreach(@lines2) {
         @parts = split;
         # print ("[63] Parts: ", length(@parts), "\n\n");
-        # print ("Parts: $parts[0], $parts[1], $parts[2]\n");
+        print ("Parts: $parts[0], $parts[1], $parts[2] \n");
         if ($parts[0] == $extract_frequency) {
             $count++;
 
