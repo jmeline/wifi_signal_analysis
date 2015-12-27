@@ -1,13 +1,13 @@
 # test_sampleParser.py
 
 import os
-from .. import sampleParser
+from ..sampleParser import SampleParser
 
 class TestSampleParser:
 
     def setup(self):
         self.folderName = os.path.join('.', 'tests', 'Export')
-        self.parser = sampleParser.SampleParser(self.folderName)
+        self.parser = SampleParser(self.folderName)
 
     def test_getDirectoryFiles(self):
         files = self._obtainDirectory()

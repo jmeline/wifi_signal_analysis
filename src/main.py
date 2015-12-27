@@ -14,7 +14,7 @@ def main():
     for _file in currentFilesInDirectory:
         extractor.storeFileNamesByPatternInDictionary(_file)
     sampleDictionary = extractor.getSampleDictionary()
-    # Debugging
+    ## Debugging
     extractor.printDirectory()
 
     ## Begin analyzing data
@@ -22,18 +22,18 @@ def main():
     analyzer = SampleAnalyizer()
     for key, value in sorted(sampleDictionary.items()):
         print ("ValueArr: ", value)
-        for filename in value:
-           if not key is 'efficien':
-               # arrList = f.getListOfContents(filename)
-               dataframe = analyzer.generateDataFrameFromFile(path + filename)
-               print ("Key: ", key)
-               # print ("arrList: ", arrList, " key: ", key)
-               analyzer.setVariables(key)
-               analyzer.extractLines(dataframe)
-               analyzer.percent_above_threshold(dataframe, key)
+        if key == 'theta=90':
+            print ("key: ", key)
+            for filename in value:
+            # if not key is 'efficien':
+                dataframe = analyzer.generateDataFrameFromFile(path + filename)
+                print ("Key: ", key)
+                analyzer.setVariables(key)
+                analyzer.extractLines(dataframe)
+                # analyzer.percent_above_threshold(dataframe, key)
 
+    print ("End Analyzing")
     #mf.printVariables()
-
     ## Begin graphing data
 
 if __name__ == '__main__':

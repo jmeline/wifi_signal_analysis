@@ -36,7 +36,6 @@ class SampleAnalyizer():
 
     def extractLines(self, df):
         copy_df = df
-
         # checks if line[0] == self.extract_frequency
         accepted_df = df[df.ix[:,0] == int(self.extract_frequency)]
         self.count = len(accepted_df)
@@ -44,18 +43,14 @@ class SampleAnalyizer():
         self.signalCount = len(accepted_df[accepted_df.ix[:,2] >= self.threshold])
         self.arr_signal = accepted_df.ix[:,2]
 
-    def countSignals(self, index):
-        count = 0
-        while ( float(self.sortedSignals[count]) >= index):
-            count += 1
-            if count >= len(self.sortedSignals):
-                break
-        return count
-    def percent_above_threshold(self, dataframe="", value=""):
+        print ("self.count: ", self.count)
+        print ("self.signalCount: ", self.signalCount)
+        self.results = 100.0 * int(10000 * self.signalCount / self.totalSignal) / 10000
+        print ("-> ", self.results, "% of signals above ", self.threshold, " dbi ")
 
+    def percent_above_threshold(self, dataframe="", value=""):
         if self.cut != 'theta=90':
             self.plot_data.extend(self.plot_data2)
-
             self.sortedSignals = sorted(self.arr_signal)
             #print("self.count:", self.count)
             #print("self.signalCount:", self.signalCount)
@@ -84,6 +79,14 @@ class SampleAnalyizer():
 
         else:
             print ("Error! No value for pname and/or cut")
+
+    def countSignals(self, index):
+        count = 0
+        while ( float(self.sortedSignals[count]) >= index):
+            count += 1
+            if count >= len(self.sortedSignals):
+                break
+        return count
 
     def generateDataFrameFromFile(self, filename):
         return pd.read_csv(filename, skiprows=2, delimiter='\t', header=0)

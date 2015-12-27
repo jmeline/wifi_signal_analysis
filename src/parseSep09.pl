@@ -34,7 +34,7 @@ sub percent_above_threshold {
         @parts = split;
         # print ("[63] Parts: ", length(@parts), "\n\n");
         if ($parts[0] == $extract_frequency) {
-            print ("Parts: [0]: $parts[0], [1]: $parts[1], [2]: $parts[2] \n");
+            # print ("Parts: [0]: $parts[0], [1]: $parts[1], [2]: $parts[2] \n");
             # keeps track of the valid entries
             $count++;
 
@@ -54,6 +54,8 @@ sub percent_above_threshold {
         }
     }
 
+    print("SignalCount: $signalcount");
+    print("Count: $count");
     # print("plot_data: $plot_data\n\n");
     # print("plot_data2: $plot_data2\n\n");
 
