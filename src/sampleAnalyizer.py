@@ -1,6 +1,7 @@
 # sampleAnalyzer.py
 
 import pandas as pd
+import numpy as np
 import pprint
 
 class Vividict(dict):
@@ -35,13 +36,26 @@ class SampleAnalyizer():
         self.results = 0
 
     def extractLines(self, df):
-        copy_df = df
+        """ Let Pandas do the heavy lifting here """
         # checks if line[0] == self.extract_frequency
         accepted_df = df[df.ix[:,0] == int(self.extract_frequency)]
+        # accepted_df.sort_values(inplace=True)
+
+        # count up the rows in the entire datatable
         self.count = len(accepted_df)
+        # print (accepted_df)
         # checks if line[2] >= self.threshold and finds length
+
+        # determine the count of values in column 2 in the datatable that are equal
+        # to or exceed the threshold value
         self.signalCount = len(accepted_df[accepted_df.ix[:,2] >= self.threshold])
-        self.arr_signal = accepted_df.ix[:,2]
+
+        # Modify the data in each row in column 2 in the datatable
+        self.arr_signal = (accepted_df.ix[:,2] + 15.0) * 5.0
+
+        # round to two decimal places
+        self.arr_signal = np.round(self.arr_signal, decimals=2)
+        # print(self.arr_signal)
 
         print ("self.count: ", self.count)
         print ("self.signalCount: ", self.signalCount)
