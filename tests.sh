@@ -1,2 +1,2 @@
 cd src
-py.test
+py.test --cov tests
