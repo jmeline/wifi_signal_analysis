@@ -1,2 +1,3 @@
 cd src
-coverage run -m py.test
+#coverage run -m py.test
+py.test --cov=tests
