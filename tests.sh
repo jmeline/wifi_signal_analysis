@@ -1,2 +1,2 @@
 cd src
-py.test --cov tests
+coverage run -m py.test
