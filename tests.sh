@@ -1,3 +1,3 @@
 cd src
-#coverage run -m py.test
-py.test --cov=tests
+coverage run --source=tests -m py.test && coveralls
+# py.test --cov=tests
