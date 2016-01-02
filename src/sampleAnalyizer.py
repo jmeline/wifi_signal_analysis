@@ -35,32 +35,36 @@ class SampleAnalyizer():
         self.sortedSignals = []
         self.results = 0
 
-    def extractLines(self, df):
+    def analyzeDataFrame(self, df):
         """ Let Pandas do the heavy lifting here """
-        # checks if line[0] == self.extract_frequency
+        # reduce dataframe to only values that match extract_frequency
         accepted_df = df[df.ix[:,0] == int(self.extract_frequency)]
-        # accepted_df.sort_values(inplace=True)
 
-        # count up the rows in the entire datatable
+        # count up the rows in the entire datatable. i.e get a count
         self.count = len(accepted_df)
-        # print (accepted_df)
-        # checks if line[2] >= self.threshold and finds length
 
         # determine the count of values in column 2 in the datatable that are equal
         # to or exceed the threshold value
         self.signalCount = len(accepted_df[accepted_df.ix[:,2] >= self.threshold])
 
-        # Modify the data in each row in column 2 in the datatable
+        # Add 15 and then multiply by 5 to each row in the dataframe
         self.arr_signal = (accepted_df.ix[:,2] + 15.0) * 5.0
 
         # round to two decimal places
         self.arr_signal = np.round(self.arr_signal, decimals=2)
-        # print(self.arr_signal)
 
         print ("self.count: ", self.count)
         print ("self.signalCount: ", self.signalCount)
+
         self.results = 100.0 * int(10000 * self.signalCount / self.totalSignal) / 10000
         print ("-> ", self.results, "% of signals above ", self.threshold, " dbi ")
+
+        print ("self.percentAbove: ", self.results/100)
+
+    def createWaterFallChart(self):
+        """ Create the waterfall chart """
+        pass
+
 
     def percent_above_threshold(self, dataframe="", value=""):
         if self.cut != 'theta=90':

@@ -29,7 +29,7 @@ def main():
                 dataframe = analyzer.generateDataFrameFromFile(path + filename)
                 print ("Key: ", key)
                 analyzer.setVariables(key)
-                analyzer.extractLines(dataframe)
+                analyzer.analyzeDataFrame(dataframe)
                 # analyzer.percent_above_threshold(dataframe, key)
 
     print ("End Analyzing")
